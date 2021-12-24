@@ -1,7 +1,6 @@
 package AmandaZhang88.com;
 
 public class Main {
-
     public static void main(String[] args) {
        int [] intArray = {1,34,-23,56,78,21,-3};
 
@@ -17,9 +16,7 @@ public class Main {
                int j = i;
 
                while (j >= gap && intArray [j - gap] > newElement){
-
                    swap (intArray, j-gap, j );
-
                    System.out.println();
                }
            }
