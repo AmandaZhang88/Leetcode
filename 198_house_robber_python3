@@ -1,0 +1,35 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        
+        leng = len(nums)   
+        # 1. build dp table 
+        dp = [0] * (leng + 1)
+        
+        # 2. find the base case
+        dp[0] = 0          # there is no house left, so rob nothing
+        dp[1] = nums[-1]   # there is only one house, take it as last element in the nums
+        
+        # if there are two house, you have to get the max value
+        # dp[2] = max (nums[-1], nums(-2))  
+        
+        # if 3 houses, rob the one in mid,  or rob the first one + thried one
+        # dp[3] = max (dp[3-1], dp[3-2] + nums[3]) 
+        
+        ##### 3. transfer fouction
+        # dp[n] = max (dp[n-1], dp[n - 2] + nums[n])
+    
+        for i in range (2, leng + 1):
+            
+             # max(mid house , or rob first --> skip second ---> + last one)
+            dp[i] = max (dp[i - 1], dp[i - 2] + nums[-i])  
+            
+        return dp[leng]
+     
+               # 2 1 1 9
+			   # dp[n] : n remains , max stole value
+			   # dp 0 = 0
+			   # dp 1 = 1 # the value of house one
+			   # dp 2 = max ( dp[0] + house2, dp 1)
+			   # dp 3 = max ( dp[1] + house3, dp 2)
+			   # dp 4 = max ( dp[2] + house4, dp 3)
+                
