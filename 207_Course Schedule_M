@@ -1,0 +1,48 @@
+BFS and Indegree List Solution
+BFS is nothing but recurssion + queue
+If the graph has a cycle, then we return False, otherwise we return True
+
+Algo:
+We define course a is a pre-requisite for b: a -> b
+We define indegree x as how many courses are pre-requisites for a Course B
+If a -> b and c -> b then the indegree of b is 2;
+If a does not require any pre-requisite course, then the indegree of course a is 0;
+When the indegree of a course is 0, we can register it without any holds.
+We add the indegree == 0 courses into our study(BFS) queue;
+Because we took the pre-requisite we need to update the indegree for every affected courses, in other words, we will do BFS to the poped course to decrease all the dependent courses indegree by 1;
+We keep adding the indegree == 0 courses to the queue and collect all left poped courses to our 'learning path' as our answer list
+If there is a cycle in the graph, then the length of the answer list will not match the given numCourses thus we return an empty list
+Python3 Example Code:
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        # init DAG: Course pre -> Course
+        d = defaultdict(list)
+        # indegree list: there are # courses as pre-requisites for takign Course A 
+        indeg = [0] * numCourses
+        # c: course;  p: pre for course
+        for c, p in prerequisites:
+            d[p].append(c)
+            # p -> c will increase the indegree of c
+            indeg[c] += 1
+            
+        # BFS queue: enque all the 0 indegree courses
+        q = deque([i for i, x in enumerate(indeg) if x == 0])
+        
+        # milestone check, good habit
+        # print(q)
+        
+        # learning path
+        ans = []
+        while q:
+            cur = q.popleft()
+            # add it to our learning path
+            ans.append(cur)
+            # apply BFS to cur can yield the affected courses, decrease their indegree by 1
+            for c in d[cur]:
+                indeg[c] -= 1
+                # if the indegree reach 0, enque
+                if indeg[c] == 0:
+                    q.append(c)
+        
+		# print(ans)
+        return len(ans) == numCourses
